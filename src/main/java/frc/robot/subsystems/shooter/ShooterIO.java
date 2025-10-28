@@ -11,15 +11,10 @@ public interface ShooterIO {
 
   @AutoLog
   public static class ShooterIOInputs {
-    public Angle topShooterPositionRotations = Units.Radians.zero();
-    public AngularVelocity topFlywheelVelocity = Units.RPM.zero();
-    public Voltage topFlywheelAppliedVolts = Units.Volts.zero();
-    public Current topFlywheelOutputCurrent = Units.Amp.zero();
-
-    public Angle bottomShooterPositionRotations = Units.Radians.zero();
-    public AngularVelocity bottomFlywheelVelocity = Units.RPM.zero();
-    public Voltage bottomFlywheelAppliedVolts = Units.Volts.zero();
-    public Current bottomFlywheelOutputCurrent = Units.Amp.zero();
+    public Angle ShooterPositionRotations = Units.Radians.zero();
+    public AngularVelocity FlywheelVelocity = Units.RPM.zero();
+    public Voltage FlywheelAppliedVolts = Units.Volts.zero();
+    public Current FlywheelOutputCurrent = Units.Amp.zero();
   }
 
   default void updateInputs(ShooterIOInputs inputs) {}
