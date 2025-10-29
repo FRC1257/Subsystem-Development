@@ -1,12 +1,10 @@
 package frc.robot.subsystems.shooter;
 
-import java.util.function.Supplier;
-
-import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.function.Supplier;
 
 public class Shooter extends SubsystemBase {
 
@@ -31,6 +29,6 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command stopCommand() {
-    return run(() -> shooterIO.setVoltage(Units.Volts.zero())).withName("Stop");
+    return run(() -> shooterIO.stop()).withName("Stop");
   }
 }
