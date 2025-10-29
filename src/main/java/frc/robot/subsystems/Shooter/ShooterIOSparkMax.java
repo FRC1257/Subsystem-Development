@@ -30,12 +30,15 @@ public class ShooterIOSparkMax implements ShooterIO {
         rightController.setP(kP);
         rightController.setI(kI);
         rightController.setD(kD);
+        //where are the set methods supposed to be coming from?
+        
     }
 
     @Override
     public void setRPM(double rpm){
         leftController.setReference(rpm, com.revrobotics.ControlType.kVelocity, 0, leftFF);
         rightController.setReference(rpm, com.revrobotics.ControlType.kVelocity, 0, rightFF);
+        //is this correct?
     }
 
     @Override
