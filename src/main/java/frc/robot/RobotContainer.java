@@ -27,6 +27,12 @@ import frc.robot.subsystems.vision.VisionIOPhoton;
 import frc.robot.subsystems.vision.VisionIOSim;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
+import frc.robot.subsystems.shooter.Shooter;
+import frc.robot.subsystems.shooter.ShooterIO;
+import frc.robot.subsystems.shooter.ShooterIOSim;
+import frc.robot.subsystems.shooter.ShooterIOSparkMax;
+import frc.robot.subsystems.shooter.ShooterConstants;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -36,6 +42,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 public class RobotContainer {
   // Subsystems
   private final Drive drive;
+  private final Shooter shooter;
 
   private Mechanism2d mech = new Mechanism2d(3, 3);
 
@@ -55,6 +62,7 @@ public class RobotContainer {
                 new ModuleIOSparkMax(2),
                 new ModuleIOSparkMax(3),
                 new VisionIOPhoton());
+        shooter = new Shooter(new ShooterIOSparkMax());
         break;
 
         // Sim robot, instantiate physics sim IO implementations
