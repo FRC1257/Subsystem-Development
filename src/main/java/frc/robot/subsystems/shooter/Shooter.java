@@ -1,7 +1,7 @@
 package frc.robot.subsystems.shooter;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
@@ -25,11 +25,12 @@ public class Shooter extends SubsystemBase {
   }
 
   public Command runVoltage(DoubleSupplier voltage) {
-    return new RunCommand(() -> io.setVoltage(voltage.getAsDouble()), this);
+    return run(() -> io.setVoltage(MathUtil.clamp(voltage.getAsDouble(), -12, 12)))
+        .withName("Cool Voltage Command");
   }
 
   public Command runRPM(DoubleSupplier rpm) {
-    return new RunCommand(() -> io.setRPM(rpm.getAsDouble()), this);
+    return run(() -> io.setRPM(rpm.getAsDouble())).withName("Cool RPM Command");
   }
 
   public void setPIDGains(double Kp, double Ki, double Kd) {
