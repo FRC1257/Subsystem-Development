@@ -34,6 +34,7 @@ import java.util.function.DoubleSupplier;
 
 
 public class Shooter extends SubsystemBase {
+  public ShooterIO ShooterIO;
     public Shooter(ShooterIO io) {
         ShooterIO = io;
         //why is there an error?
@@ -42,8 +43,9 @@ public class Shooter extends SubsystemBase {
     public Command runVoltage(DoubleSupplier voltage) {
       //says there's an error bc setVoltage parameter is double not DoubleSupplier??
       return new FunctionalCommand(
-        () -> setVoltage(voltage),
-        () -> {setVoltage(voltage);},
+
+        () -> ShooterIO.setVoltage(voltage.getAsDouble()),
+        () -> {ShooterIO.setVoltage(voltage.getAsDouble());},
         (interrupted) -> {
           if (interrupted) {
             ShooterIO.stop();
@@ -56,12 +58,9 @@ public class Shooter extends SubsystemBase {
 
 
     public Command runRPM(DoubleSupplier rpm){
-      //same issue as above i think
-      //i thought setting it as a double would work
-      double r = rpm.getAsDouble();
       return new FunctionalCommand(
-        () -> setRPM(r),
-        () -> {setRPM(r);},
+        () -> ShooterIO.setRPM(rpm.getAsDouble()),
+        () -> {ShooterIO.setRPM(rpm.getAsDouble());},
         (interrupted) -> {
           if (interrupted) {
             ShooterIO.stop();

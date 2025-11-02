@@ -1,52 +1,81 @@
 package frc.robot.subsystems.Shooter;
 
-
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.PWM;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkFlex;
+
+import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkBase.ControlType;
+
+
+
 
 public class ShooterIOSparkMax implements ShooterIO {
-    private SparkClosedLoopController leftController; //velocity pid controller (left)
-    private SparkClosedLoopController rightController; //velocity pid controller (right)
+    private RelativeEncoder leftEncoder;
+    private RelativeEncoder rightEncoder;
+
+    SparkFlex leftMotor = new SparkFlex(1, MotorType.kBrushless);
+    SparkFlex rightMotor = new SparkFlex(2, MotorType.kBrushless);
+
+    private SparkClosedLoopController leftController; // pid controller (left)
+    private SparkClosedLoopController rightController; // pid controller (right)
+
     private SimpleMotorFeedforward leftFF = new SimpleMotorFeedforward(0.0, 0.0, 0.0);
     private SimpleMotorFeedforward rightFF = new SimpleMotorFeedforward(0.0, 0.0, 0.0);
-    public PWMSparkFlex leftMotor;
-    public PWMSparkFlex rightMotor;
-
-    @Override
-    public void setVoltage(double voltage) {
-        leftMotor.setVoltage(voltage);
-        rightMotor.setVoltage(voltage);
-    }
 
 
 
-    @Override
-    public void setPIDGains(double kP, double kI, double kD){
-        leftController.setP(kP);
-        leftController.setI(kI);
-        leftController.setD(kD);
-        rightController.setP(kP);
-        rightController.setI(kI);
-        rightController.setD(kD);
-        //where are the set methods supposed to be coming from?
-        
+
+
+    public ShooterIOSparkMax() {
+        leftEncoder = leftMotor.getEncoder();
+        rightEncoder = rightMotor.getEncoder();
+
+        leftController = leftMotor.getClosedLoopController();
+        rightController = rightMotor.getClosedLoopController();
+
+
     }
 
     @Override
-    public void setRPM(double rpm){
-        leftController.setReference(rpm, com.revrobotics.ControlType.kVelocity, 0, leftFF);
-        rightController.setReference(rpm, com.revrobotics.ControlType.kVelocity, 0, rightFF);
-        //is this correct?
+    public double getVoltage(){
+        return (leftMotor.getAppliedOutput() + rightMotor.getAppliedOutput()) / 2.0;
+        //didn't know what would actually go here
+        //js let vscode fill it out
     }
-
     @Override
     public void setFeedForwardGains(double kS, double kV, double kA) {
         leftFF = new SimpleMotorFeedforward(kS, kV, kA);
         rightFF = new SimpleMotorFeedforward(kS, kV, kA);
     }
 
+    @Override
+    public void setVoltage(double voltage) {
+        leftMotor.setVoltage(voltage);
+        rightMotor.setVoltage(voltage);
+    }
+    @Override
+    public void setPIDGains(double kP, double kI, double kD) {
+        ClosedLoopConfig PIDconfig = new ClosedLoopConfig();
+        PIDconfig.pid(kP, kI, kD);
+        //how do i apply it the motors
+    }
 
+    @Override
+    public void setRPM(double rpm){
+        SparkBase.ControlType controlType = SparkBase.ControlType.kVelocity;
+        leftController.setReference(rpm, controlType);
+        rightController.setReference(rpm, controlType);
+    }
+
+
+
+
+
+   
 
 }
