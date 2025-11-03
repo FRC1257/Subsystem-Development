@@ -1,26 +1,92 @@
-// Copyright 2021-2024 FRC 6328
-// http://github.com/Mechanical-Advantage
-//
-// This program is free software; you can redistribute it and/or
-// modify it under the terms of the GNU General Public License
-// version 3 as published by the Free Software Foundation or
-// available in the root directory of this project.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-// GNU General Public License for more details.
+package frc.robot.subsystems.shooter;
 
-package frc.robot.subsystems.Shooter;
+import org.littletonrobotics.junction.AutoLog;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import java.util.function.DoubleSupplier;
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
+public interface ShooterIO {
+    @AutoLog
+    public static class ShooterIOInputs {
+        public double leftRPM = 0.0;
+        public double rightRPM = 0.0;
+        public double leftVoltage = 0.0;
+        public double rightVoltage = 0.0;
+        public double leftCurrent = 0.0;
+        public double rightCurrent = 0.0;
+    }
 
-public class Shooter extends subsystemBase {
+    default void updateInputs(ShooterIOInputs inputs) {}
 
+    default void setVoltage(double leftVolts, double rightVolts) {}
+
+    default void setVelocity(double leftRPM, double rightRPM) {}
+
+    default double getLeftRPM() { 
+        return 0.0; 
+    }
+    default double getRightRPM() { 
+        return 0.0; 
+    }
+
+    default double getLeftVoltage() { 
+        return 0.0; 
+    }
+    default double getRightVoltage() { 
+        return 0.0; 
+    }
+
+    public default void setP(double p) {}
+    public default void setI(double i) {}
+    public default void setD(double d) {}
+    public default void setkS(double kS) {}
+    public default void setkV(double kV) {}
+    public default void setkG(double kG) {}
+    public default void setkA(double kA) {}
+    public default void setActiveP(double p) {}
+    public default void setActiveI(double i) {}
+    public default void setActiveD(double d) {}
+    public default void setActivekS(double kS) {}
+    public default void setActivekV(double kV) {}
+    public default void setActivekG(double kG) {}
+    public default void setActivekA(double kA) {}
+    public default double getP() {
+        return 0.0;
+    }
+    public default double getI() {
+        return 0.0;
+    }
+    public default double getD() {
+        return 0.0;
+    }
+    public default double getkS() {
+        return 0.0;
+    }
+    public default double getkG() {
+        return 0.0;
+    }
+    public default double getkV() {
+        return 0.0;
+    }
+    public default double getkA() {
+        return 0.0;
+    }
+    public default double getActiveP() {
+        return 0.0;
+    }
+    public default double getActiveI() {
+        return 0.0;
+    }
+    public default double getActiveD() {
+        return 0.0;
+    }
+    public default double getActivekS() {
+        return 0.0;
+    }
+    public default double getActivekG() {
+        return 0.0;
+    }
+    public default double getActivekV() {
+        return 0.0;
+    }
+    public default double getActivekA() {
+        return 0.0;
+    }
 }
