@@ -17,9 +17,26 @@ import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
 
 
-public class Shooter{
 
+public class Shooter extends SubsystemBase {
+  private final ShooterIo io;
+  ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
+private LoggedNetworkNumber logP;
+  private LoggedNetworkNumber logI;
+  private LoggedNetworkNumber logD;
 
+  private LoggedNetworkNumber logkS;
+  private LoggedNetworkNumber logkG;
+  private LoggedNetworkNumber logkV;
+  private LoggedNetworkNumber logkA;
+
+    private SysIdRoutine SysId;
+
+  public static enum State {
+    MANUAL,
+    PID,
+    SYSID
+  }
 Command runVoltage(DoubleSupplier voltage)
 {
 double output = voltage
