@@ -1,9 +1,11 @@
 package frc.robot.subsystems.Shooter;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import org.littletonrobotics.junction.AutoLog;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -21,6 +23,16 @@ public class ShooterIOSparkMax implements ShooterIO {
     }
     private RelativeEncoder leftEncoder;
     private RelativeEncoder rightEncoder;
+
+        private ProfiledPIDController pidController = new ProfiledPIDController(
+        ShooterConstants.kP,
+        ShooterConstants.kI,
+        ShooterConstants.kD,
+        new TrapezoidProfile.Constraints(
+            ShooterConstants.MAX_VELOCITY,
+            ShooterConstants.MAX_ACCELERATION
+        )
+    );
 
     SparkFlex leftMotor = new SparkFlex(1, MotorType.kBrushless);
     SparkFlex rightMotor = new SparkFlex(2, MotorType.kBrushless);
@@ -63,10 +75,25 @@ public class ShooterIOSparkMax implements ShooterIO {
         rightMotor.setVoltage(voltage);
     }
     @Override
+    public void setP(double kP) {
+        pidController.setP(kP);
+    }
+
+    @Override
+    public void setI(double kI) {
+        pidController.setI(kI);
+    }
+    
+    @Override
+    public void setD(double kD) {
+        pidController.setD(kD);
+    }
+
+    @Override
     public void setPIDGains(double kP, double kI, double kD) {
-        ClosedLoopConfig PIDconfig = new ClosedLoopConfig();
-        //switch to use profiledpidcontroller
-        //will make periodic w/ logging easier too
+        pidController.setP(kP);
+        pidController.setI(kI);
+        pidController.setD(kD);
     }
 
     @Override
@@ -75,6 +102,7 @@ public class ShooterIOSparkMax implements ShooterIO {
         leftController.setReference(rpm, controlType);
         rightController.setReference(rpm, controlType);
     }
+
 
 
 
