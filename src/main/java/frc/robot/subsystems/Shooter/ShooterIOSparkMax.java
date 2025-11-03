@@ -15,6 +15,10 @@ import com.revrobotics.spark.SparkBase.ControlType;
 
 
 public class ShooterIOSparkMax implements ShooterIO {
+    public void updateInputs(ShooterIOInputs inputs) {
+        inputs.voltage = getVoltage();
+
+    }
     private RelativeEncoder leftEncoder;
     private RelativeEncoder rightEncoder;
 
@@ -61,8 +65,8 @@ public class ShooterIOSparkMax implements ShooterIO {
     @Override
     public void setPIDGains(double kP, double kI, double kD) {
         ClosedLoopConfig PIDconfig = new ClosedLoopConfig();
-        PIDconfig.pid(kP, kI, kD);
-        //how do i apply it the motors
+        //switch to use profiledpidcontroller
+        //will make periodic w/ logging easier too
     }
 
     @Override
