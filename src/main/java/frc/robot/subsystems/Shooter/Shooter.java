@@ -48,6 +48,7 @@ import java.util.function.DoubleSupplier;
 
 public class Shooter extends SubsystemBase {
   private final ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
+  private final ShooterIO io;
 
   private LoggedNetworkNumber logP;
   private LoggedNetworkNumber logI;
@@ -60,7 +61,7 @@ public class Shooter extends SubsystemBase {
 
   public ShooterIO ShooterIO;
     public Shooter(ShooterIO io) {
-        ShooterIO = io;
+        this.io = io;
         SmartDashboard.putData(getName(), this);
         logP = new LoggedNetworkNumber("/SmartDashboard/Shooter/kP", io.getP());
         logI = new LoggedNetworkNumber("/SmartDashboard/Shooter/kI", io.getI());
@@ -78,9 +79,6 @@ public class Shooter extends SubsystemBase {
       ShooterIO.updateInputs(inputs);
       Logger.processInputs("Shooter", inputs);
   
-
-  
-      // Update the PID constants if they have changed
       if (logP.get() != ShooterIO.getP()) ShooterIO.setP(logP.get());
   
       if (logI.get() != ShooterIO.getI()) ShooterIO.setI(logI.get());
