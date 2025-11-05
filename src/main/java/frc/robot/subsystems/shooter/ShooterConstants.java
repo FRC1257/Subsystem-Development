@@ -7,6 +7,6 @@ public class ShooterConstants {
   public static final int BACK_MOTOR_ID = 0;
 
   // SPEED
-  public static final double MAX_VELOCITY =
-      8; // m/s i think, not sure if this is fast or slow for a shooter
+  public static final double MAX_VELOCITY = 8; // m/s i think, not sure if this is fast or slow for a shooter
+  public static final double MAX_ACCERLERATION=16;
 }

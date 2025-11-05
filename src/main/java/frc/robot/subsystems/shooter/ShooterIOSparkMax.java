@@ -1,6 +1,8 @@
 package frc.robot.subsystems.shooter;
 
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
+import static frc.robot.subsystems.shooter.ShooterConstants.MAX_ACCERLERATION;
+import static frc.robot.subsystems.shooter.ShooterConstants.MAX_VELOCITY;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
@@ -8,7 +10,8 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import org.littletonrobotics.junction.Logger;
 
 public class ShooterIOSparkMax implements ShooterIO {
@@ -16,7 +19,7 @@ public class ShooterIOSparkMax implements ShooterIO {
   private SparkFlex backMotor;
   private RelativeEncoder encoder;
 
-  private PIDController pidController = new PIDController(0, 0, 0);
+  private ProfiledPIDController pidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(MAX_VELOCITY,MAX_ACCERLERATION));
 
   public ShooterIOSparkMax() {
     frontMotor = new SparkFlex(ShooterConstants.FRONT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
@@ -84,7 +87,7 @@ public class ShooterIOSparkMax implements ShooterIO {
 
   @Override
   public void setRPM(double rpm) {
-    double voltage = pidController.calculate(getRPM(), rpm);
+    double voltage = pidController.calculate(getRPM(), rpm); //idk do i have to do anything special
 
     frontMotor.setVoltage(voltage);
   }
