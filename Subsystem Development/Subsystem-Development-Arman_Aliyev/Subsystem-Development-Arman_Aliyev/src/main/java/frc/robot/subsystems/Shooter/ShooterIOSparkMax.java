@@ -1,6 +1,18 @@
 package frc.robot.subsystems.Shooter;
 import com.revrobotics.RelativeEncoder;
 
+//lower level logic like setters 
+//need configure resetmode and persistmode
+//create the pid controller here , configs here too inside contructer
+//comfigs - defaults are wrong, configs make adjustments ot settnng and pass, apply - copies from one to another
+//follow config - follows some other thing here be set voltage ands get 
+// also set and get rpm
+//encoder - tells motor where it is, information about the location of motor
+//
+
+
+//update inputs takes previouslt taken inputs and adjusts them to be based on the new inputs
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 //import com.revrobotics.CANSparkMax;
@@ -9,11 +21,10 @@ public class ShooterIOSparkMax {
     public class ShooterIOSparkMax implements ShooterIO {
 private final CANSparkMax frontMotor;
     private final CANSparkMax rearMotor;
+    private final CANSparkMax frontMotor;
     private final RelativeEncoder frontEncoder;
-    private final RelativeEncoder rearEncoder;
     private final SparkPIDController frontPID;
-    private final SparkPIDController rearPID;
-
+    
     private boolean frontBrakeMode = false;
     private boolean rearBrakeMode = false;
 
@@ -35,18 +46,10 @@ private final CANSparkMax frontMotor;
         frontPID.setI(kI);
         frontPID.setD(kD);
     
-        rearPID.setP(kP);
-        rearPID.setI(kI);
-        rearPID.setD(kD);
+        //only really needed 1 pid because same speed.
+        //backconfig follow each other
     }
-    @Override
-    public void setFeedforwardGains(double Ks, double Kv, double Ka) {
-    
-        this.Ks = Ks;
-        this.Kv = Kv;
-        this.Ka = Ka;
-    }
-        
+   
 
 public ShooterIOSparkMax() {
 
@@ -64,6 +67,11 @@ public ShooterIOSparkMax() {
 
 @Override
     public void updateInputs(ShooterIOIn inputs) {
+        inputs.Velocity = getVelocity;
+        inputs.voltage = getVoltage;
+        
+        
+        
         //updates front and rear motor data, which data im not sure
     
 }

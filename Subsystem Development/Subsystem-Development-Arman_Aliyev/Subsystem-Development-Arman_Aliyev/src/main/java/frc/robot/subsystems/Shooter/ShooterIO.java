@@ -2,35 +2,36 @@ package frc.robot.subsystems.Shooter;
 import org.littletonrobotics.junction.AutoLog;
 @AutoLog
 
-public interface ShooterIO {
-    public static class shooterIOIn{
-public static double frontTempC = 0.0;
-public static double frontVelocityRPM = 0.0;
-public static double frontCurrentAmps = 0.0;
-public static double frontAppVolts = 0.0;
+//needed methods : setvoltage 
 
-public static double rearTempC = 0.0;
-public static double rearVelocityRPM = 0.0;
-public static double rearCurrentAmps = 0.0;
-public static double rearAppVolts = 0.0;
+public interface ShooterIO { //define methods but not implementations in interface
+    public static class shooterIOIn{
     
-public void setFrontVoltage(double voltage){
+
+public double getVoltage(){
+  return 0;
 }
-public void setRearVoltage(double voltage){
-} // im not sure where to put this bc this is the simple part of setting volatge
-// but supposedly there is a more complex implementation that goes into shooter
-public double getFrontVelocity() {
+public void setVoltage(double voltage){} 
+
+
+public double getVelocity() {
     return 0;
   }
-public double getRearVelocity() {
-    return 0;
-  }
+public void setVelocity(double Velocity){}
+
+
+public double getRPM(double rpm){
+  return 0;
+}
+public void setRPM(double rpm){}
+
+
 }
     public default void updateInputs(shooterIOIn inputs) {}
 
-    default void setBrakeMode(boolean enable){};
+    //default void setBrakeMode(boolean enable){};
 
-    default void stop() {}
+    //default void stop() {}
 
     //default void configurePID(double kP, double kI, double kD) {}
     

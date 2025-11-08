@@ -1,7 +1,6 @@
 package frc.robot.subsystems.Shooter;
 
 public class ShooterConstants {
-    public static final int shooterMass = 2;
     private static final int defaultRpm = 4000; 
     
 
