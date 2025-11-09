@@ -1,3 +1,8 @@
 package frc.robot.subsystems.Arm;
 
-public class ArmConstants {}
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+
+public class ArmConstants {
+
+    public static Constraints kArmConstraints;
+}
