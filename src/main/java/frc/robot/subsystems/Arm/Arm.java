@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,12 +26,28 @@ public class Arm extends SubsystemBase {
         return runOnce(() -> io.setVoltage(voltage));
     }
 //doublesupplier = runnables that return doubles
-    public Command runPosition(DoubleSupplier position) {
-        return runEnd(
-            () -> io.setPosition(position.getAsDouble()),
-            () -> io.setPosition(0.0)
-            ).withName("Arm/Position - Command");
+    public Command runPosition(DoubleSupplier angle) {
 
+        return run(
+            () -> io.setPosition(MathUtil.clamp(angle.getAsDouble(), ArmConstants.LOWER_LIMIT, ArmConstants.UPPER_LIMIT)))
+            .withName("Arm/Position - Command");
+
+         //setposition of arm's to position DoubleSupplier
+        //runEnd = two runnables
+        //what it does while the command ends and what it should do when the command end
+        // while running - set position to position
+        //after that - set it to 0 when it is done/ not running
+        //could have done this with a run command instead of runend
+
+        //last year code - have these commands + other junk that isn't rlly necessary
+        //look at what top teams are doing
+        
+        //prevent the arm from moving beyond its limit
+
+    }
+
+    public Command stop(){
+        return runOnce(() -> io.stop()).withName("Arm/Stop - Command");
     }
 
 }
