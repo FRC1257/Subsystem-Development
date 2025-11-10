@@ -1,10 +1,14 @@
 package frc.robot.subsystems.arm;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.function.DoubleSupplier;
+
+import static frc.robot.subsystems.arm.ArmConstants.MAX_POSITION;
+import static frc.robot.subsystems.arm.ArmConstants.MIN_POSITION;
 
 public class Arm extends SubsystemBase {
     private final ArmIO io;
@@ -24,8 +28,13 @@ public class Arm extends SubsystemBase {
 
     public Command runPosition(DoubleSupplier angle) {
       return runEnd(
-              ()->io.setPosition(angle.getAsDouble()),
+              ()->io.setPosition(MathUtil.clamp(angle.getAsDouble(),MIN_POSITION,MAX_POSITION)),
               ()->io.setPosition(0)
       ).withName("Moving my arm");
+    }
+
+    public Command stop() {
+        return runOnce(()->io.setPosition(0))
+                .withName("OH NO I STOPPED MOVING MY ARM");
     }
 }
