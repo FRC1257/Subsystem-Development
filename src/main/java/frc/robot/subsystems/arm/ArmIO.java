@@ -5,7 +5,8 @@ import org.littletonrobotics.junction.AutoLog;
 public interface ArmIO {
   @AutoLog
   public class ArmIOInputs {
-    // empty for now
+    public double angleVelocityRadsPerSec = 0;
+    public double angleRads = 0;
   }
 
   public default void updateInputs(ArmIOInputs inputs) {}
