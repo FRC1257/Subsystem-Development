@@ -8,6 +8,8 @@ public interface ArmIO {
     public double angle;
     public double velocity;
     public double appliedVoltage;
+    public double angleRads;
+    public double angVelocityRadsPerSec;
   }
 
   public default void updateInputs(ArmIOInputs inputs) {}
@@ -20,6 +22,10 @@ public interface ArmIO {
   public default double getAngVelocity() {
     return 0.0;
   }
+
+  public default void setPosition(double position) {}
+
+  public default void stop(){}
 
 
 
