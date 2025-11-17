@@ -5,6 +5,9 @@ public class ShooterConstants {
     public static double kI = 0.0;
     public static double kD = 0.0;
 
+    public static double kV = 0.2; // Volts per (RPM)
+    public static double kA = 0.1; // Volts per (RPM/s)
+
     public static final double MAX_VELOCITY = 5000.0; 
     public static final double MAX_ACCELERATION = 3000.0;
 
