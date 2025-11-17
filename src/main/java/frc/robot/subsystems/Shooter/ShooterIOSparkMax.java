@@ -74,20 +74,6 @@ public class ShooterIOSparkMax implements ShooterIO {
         leftMotor.setVoltage(voltage);
         rightMotor.setVoltage(voltage);
     }
-    @Override
-    public void setP(double kP) {
-        pidController.setP(kP);
-    }
-
-    @Override
-    public void setI(double kI) {
-        pidController.setI(kI);
-    }
-    
-    @Override
-    public void setD(double kD) {
-        pidController.setD(kD);
-    }
 
     @Override
     public void setPIDGains(double kP, double kI, double kD) {
