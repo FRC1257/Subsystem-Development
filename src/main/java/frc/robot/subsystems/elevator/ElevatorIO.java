@@ -21,12 +21,12 @@ public interface ElevatorIO {
      default double getVoltage() {
         return 67.5;
     }
-    ProfiledPIDController controller = new ProfiledPIDController(
-  kP, kI, kD,
-  new TrapezoidProfile.Constraints(MaxVelocity, MaxAcceleration));
 
     default void updateInputs(ElevatorIOInputs inputs) {}
-    default void setPIDGains(double kP, double kI, double kD) {}
+
     default void setRPM(double rpm){}
+
     default void setFeedForwardGains(double kS, double kV, double kA) {}
-}
+
+    default void setSetpoint(double setpoint) {}
+}   
