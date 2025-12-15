@@ -13,8 +13,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import org.littletonrobotics.junction.Logger;
 
@@ -23,7 +22,7 @@ public class IntakeIOSparkMax implements IntakeIO{
   private SparkFlex backMotor;
   private RelativeEncoder encoder;
 
-  private ProfiledPIDController pidController = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(MAX_VELOCITY,MAX_ACCERLERATION));
+  private PIDController pidController = new PIDController(0, 0, 0,);
 
   public IntakeIOSparkMax() {
     frontMotor = new SparkFlex(IntakeConstants.FRONT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
