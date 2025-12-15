@@ -9,8 +9,6 @@ public interface IntakeIO {
     public double[] tempCelcius = new double[] {};
   }
 
-  public default void setBrake(boolean brake) {}
-
   public default void updateInputs(IntakeIOInputs inputs) {}
 
   public default void setVoltage(double voltage) {}
@@ -28,4 +26,6 @@ public interface IntakeIO {
   public default void setRPM(double rpm) {}
 
   public default void setPIDGains(double Kp, double Ki, double Kd) {}
+
+  public default void stop() {}
 }

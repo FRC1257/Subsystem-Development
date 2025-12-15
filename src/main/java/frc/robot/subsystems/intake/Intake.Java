@@ -37,4 +37,10 @@ public class intake extends SubsystemBase {
     return run(() -> io.setDirection(forward).withName("setDirection"));
   }
   
+  public Command stopCommand(){
+    return runOnce(
+    () -> io.stop()
+    Logger.processInputs(intake, inputs); 
+    )
+  }
 }
