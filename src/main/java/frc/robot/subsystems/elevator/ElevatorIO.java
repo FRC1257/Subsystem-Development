@@ -8,25 +8,60 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Voltage;
-//motor is neos
-public interface ElevatorIO {
-    @AutoLog
+//motor is neos, we still need motor methods
 
-     public static class ElevatorIOInputs {
-    //public Voltage 
-    public boolean limitSwitchPressed = false;
+public interface ElevatorIO {
+    // Hardware API (Used by SparkMax)
+    
+    
+    @AutoLog
+    public static class ElevatorIOInputs {
+        public double setpointMeters = 0.0;
+        public double positionMeters = 0.0;
+        public double velocityMetersPerSec = 0.0;
+        public double appliedVoltage = 0.0;
+        public boolean limitSwitchPressed = false;
      }
 
-     default void setVoltage(Double Voltage){}
-     default double getVoltage() {
-        return 67.5;
-    }
-    ProfiledPIDController controller = new ProfiledPIDController(
-  kP, kI, kD,
-  new TrapezoidProfile.Constraints(MaxVelocity, MaxAcceleration));
-
+    
     default void updateInputs(ElevatorIOInputs inputs) {}
-    default void setPIDGains(double kP, double kI, double kD) {}
-    default void setRPM(double rpm){}
-    default void setFeedForwardGains(double kS, double kV, double kA) {}
-}
+
+    // Getter method for target height
+    default double getSetpoint() {
+        return 0.0;
+    }
+   
+    // Getter method for current position
+    default double getPosition() {
+        return 0.0;
+    }
+
+    // Getter method for velocity
+    default double getVelocity(){
+        return 0.0;
+    }
+
+    // Checking if elevator goes above limit height
+    default boolean isLimitSwitchPressed() {
+        return false;
+    }
+
+
+    // Subsystem API (Used by commands)
+   
+    
+    // The target height in meters
+    default void setSetpoint(double setpoint) {}
+
+    // Profiled PID to go to setpoint
+    public default void goToSetpoint() {}
+
+    // Returns true if elevator at setpoint
+    public default boolean atSetpoint() {
+        return false;
+      }
+
+    // Setter for voltage 
+    default void setVoltage(double voltage) {}
+
+    }
