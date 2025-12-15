@@ -18,7 +18,7 @@ public class IntakeIOSparkMax implements IntakeIO {
   private SparkFlex backMotor;
   private RelativeEncoder encoder;
 
-  private PIDController pidController = new PIDController(0, 0, 0,);
+  private PIDController pidController = new PIDController(0, 0, 0);
 
   public IntakeIOSparkMax() {
     frontMotor = new SparkFlex(IntakeConstants.FRONT_MOTOR_ID, SparkLowLevel.MotorType.kBrushless);
