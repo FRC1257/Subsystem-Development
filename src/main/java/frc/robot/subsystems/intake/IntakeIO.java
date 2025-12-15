@@ -1,6 +1,8 @@
 import org.littletonrobotics.junction.AutoLog;
 
-public class IntakeIO {
+
+
+public interface IntakeIO {
     public static class IntakeIOInputs {
     public double velocityRadsPerSec = 0.0;
 
@@ -8,14 +10,24 @@ public class IntakeIO {
     public double[] currentAmps = new double[] {};
     public double[] tempCelcius = new double[] {};
   }
-  public void setBrake(boolean brake) {}
 
-  public void updateInputs(IntakeIOInputs inputs) {}
+  public default void setBrake(boolean brake) {}
 
-  public void setVoltage(double voltage) {}
+  public default void updateInputs(IntakeIOInputs inputs) {}
 
-  public double getVelocity() {
+  public default void setVoltage(double voltage) {}
+
+  public default double getVoltage() {
     return 0;
   }
-  public void setDirection(boolean forward){}
+
+  public default void setDirection(boolean forward){}
+  
+  public default double getRPM(){
+    return 0;
+  }
+
+  public default void setRPM(double rpm){}
+  
+  public default void setPIDGains(double Kp, double Ki, double Kd) {}
 }
