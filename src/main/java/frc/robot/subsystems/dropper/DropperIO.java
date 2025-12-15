@@ -10,6 +10,7 @@ public interface DropperIO {
         public double angVelocityRadsPerSec;
     }
     
+    // Methods to be implemented in IOSim and IOSparkMax
     public default void updateInputs(ArmIOInputs inputs) {}
 
     public default double getAngle() {}
