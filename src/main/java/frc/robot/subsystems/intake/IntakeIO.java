@@ -1,6 +1,8 @@
+package frc.robot.subsystems.intake;
 import org.littletonrobotics.junction.AutoLog;
 
-public class IntakeIO {
+public interface IntakeIO {
+ {
     public static class IntakeIOInputs {
     public double velocityRadsPerSec = 0.0;
 
@@ -14,7 +16,7 @@ public class IntakeIO {
 
   public void setVoltage(double voltage) {}
 
-  public double getVelocity() {
+  public double getVoltage() {
     return 0;
   }
   public void setDirection(boolean forward){}
