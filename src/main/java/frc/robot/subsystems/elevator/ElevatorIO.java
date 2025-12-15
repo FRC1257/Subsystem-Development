@@ -11,16 +11,12 @@ import edu.wpi.first.units.measure.Voltage;
 //motor is neos
 public interface ElevatorIO {
     @AutoLog
-
-     public static class ElevatorIOInputs {
-    //public Voltage 
-    public boolean limitSwitchPressed = false;
+    public static class ElevatorIOInputs {
+        public boolean limitSwitchPressed = false;
      }
 
-     default void setVoltage(Double Voltage){}
-     default double getVoltage() {
-        return 67.5;
-    }
+
+    default void setVoltage(double voltage) {}
 
     default void updateInputs(ElevatorIOInputs inputs) {}
 
