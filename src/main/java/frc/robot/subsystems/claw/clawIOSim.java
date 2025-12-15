@@ -32,7 +32,7 @@ public class ClawIOSSim implements ClawIO{
 @Override
     public ClawIOSim() {}
     //No paramaters, creates instance of ClawIOSim
-
+@Override
     public void updateInputs(ClawIOInputs inputs)
     //inputs are updated with the parameter
         sim.update(0.02)
@@ -47,13 +47,6 @@ public class ClawIOSSim implements ClawIO{
     //Placeholder temperature
 
     @Override
-    public void setVoltage (double volts){
-        appliedVoltage = volts;
-        sim.setInputVoltage(volts);
-    }
-    //Setvoltage
-
-    @Override
     public double getVelocity(){
         return sim.getAngularVelocityRadPerSec();
     }
@@ -61,10 +54,10 @@ public class ClawIOSSim implements ClawIO{
     
     @Override
     public void open(double volts)
-        setVoltage(-volts);
+        setVoltage(Claw_Open_Speed);
     //Set voltage for opening
     
     @Override
     public void close(double volts)
-        setVoltage(volts);
+        setVoltage(Claw_Close_Speed);
     //Set voltage for closing

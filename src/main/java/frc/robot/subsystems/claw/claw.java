@@ -16,16 +16,19 @@ public Claw(ClawIO io) {
     public Command openClaw() {
         return runEnd(
             () -> io.open()
+            Logger.processInputs(key:“Claw”, inputs);
         )
     }
     public Command closeClaw() {
         return runEnd(
             () -> io.close()
+            Logger.processInputs(key:“Claw”, inputs);
         )
     }
     public Command stopCommand() {
         return runOnce(
             () -> io.stop()
+            Logger.processInputs(key:“Claw”, inputs);
         )
     }
 }

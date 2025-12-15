@@ -7,7 +7,7 @@ public class ClawConstants{
 
     public static final double kMomentofInertia = 1.2 
 
-    public static final double Claw_Open_Speed = 1.2
+    public static final double Claw_Open_Speed = -1.2
     
     public static final double Claw_Close_Speed = 1.2
 }
