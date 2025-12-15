@@ -4,21 +4,17 @@ import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import org.littletonrobotics.junction.Logger;
 
-public class IntakeIOSparkMax implements IntakeIO{
-    private SparkFlex frontMotor;
+public class IntakeIOSparkMax implements IntakeIO {
+  private SparkFlex frontMotor;
   private SparkFlex backMotor;
   private RelativeEncoder encoder;
 
@@ -32,7 +28,7 @@ public class IntakeIOSparkMax implements IntakeIO{
 
     SparkFlexConfig frontConfig = new SparkFlexConfig();
 
-    frontConfig 
+    frontConfig
         .idleMode(SparkBaseConfig.IdleMode.kBrake)
         .voltageCompensation(12)
         .smartCurrentLimit(NEO_CURRENT_LIMIT);
@@ -42,15 +38,21 @@ public class IntakeIOSparkMax implements IntakeIO{
     backConfig.apply(frontConfig);
     backConfig.follow(frontMotor);
 
-    frontMotor.configure(frontConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    backMotor.configure(backConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    frontMotor.configure(
+        frontConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
+    backMotor.configure(
+        backConfig,
+        SparkBase.ResetMode.kResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
   }
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.velocityRPM = getRPM();
-    inputs.appliedVoltage = frontMotor.getAppliedOutput() * frontMotor.getBusVoltage(); 
-    inputs.motorCurrent =frontMotor.getOutputCurrent(); 
+    inputs.appliedVoltage = frontMotor.getAppliedOutput() * frontMotor.getBusVoltage();
+    inputs.motorCurrent = frontMotor.getOutputCurrent();
   }
 
   @Override
@@ -66,22 +68,22 @@ public class IntakeIOSparkMax implements IntakeIO{
   @Override
   public void setVoltage(double voltage) {
     frontMotor.setVoltage(voltage);
-    Logger.recordOutput("Shooter/Set Voltage", voltage); 
+    Logger.recordOutput("Shooter/Set Voltage", voltage);
   }
 
   @Override
   public double getVoltage() {
-    return frontMotor.getAppliedOutput() * frontMotor.getBusVoltage(); 
+    return frontMotor.getAppliedOutput() * frontMotor.getBusVoltage();
   }
 
   @Override
   public void setRPM(double rpm) {
-    double voltage = pidController.calculate(getRPM(), rpm); 
+    double voltage = pidController.calculate(getRPM(), rpm);
     frontMotor.setVoltage(voltage);
   }
+
   @Override
-  public void setDirection(boolean forward){
+  public void setDirection(boolean forward) {
     frontMotor.setInverted(forward);
   }
 }
-
