@@ -99,23 +99,7 @@ private SparkMax leftMotor;
     pidController.reset(getPosition(), getVelocity());
   }
 
-  //@Override
-//   public void goToSetpoint() { ///////////////needs fixing
-//     double pidOutput = pidController.calculate(getPosition());
-
-//     // change in velocity / change in time = acceleration
-//     // Acceleration is used to calculate feedforward
-//     double acceleration =
-//         (pidController.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime);
-
-//     double ffOutput = feedforward.calculate(pidController.getSetpoint().velocity, acceleration);
-
-//     setVoltage(MathUtil.clamp(pidOutput + ffOutput, -12, 12));
-
-//     lastSpeed = pidController.getSetpoint().velocity;
-//     lastTime = Timer.getFPGATimestamp();
-//   }
-
+  
   @Override
   public boolean atSetpoint() {
     // if the difference between setpoint and position is less than the tolerance

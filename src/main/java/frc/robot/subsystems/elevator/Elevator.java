@@ -20,25 +20,6 @@ public class Elevator extends SubsystemBase {
   public Elevator(ElevatorIO io) {
     
     this.io = io;
-
-    SysId =
-    new SysIdRoutine(
-        new SysIdRoutine.Config(
-            Volts.per(Second).of(ElevatorConstants.SYSID_RAMP_RATE),
-            Volts.of(ElevatorConstants.SYSID_STEP_VOLTAGE),
-            Seconds.of(ElevatorConstants.SYSID_TIME),
-            (state) -> Logger.recordOutput("Elevator/SysIdTestState", state.toString())),
-        new SysIdRoutine.Mechanism(
-            v -> io.setVoltage(v.in(Volts)),
-            (sysidLog) -> {
-              sysidLog
-                  .motor("Elevator")
-                  .voltage(m_appliedVoltage.mut_replace(inputs.appliedVoltage, Volts))
-                  .linearPosition(m_position.mut_replace(inputs.positionMeters, Meters))
-                  .linearVelocity(
-                      m_velocity.mut_replace(inputs.velocityMetersPerSec, MetersPerSecond));
-            },
-            this));
 }
   }
 
