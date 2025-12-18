@@ -41,6 +41,7 @@ public interface ElevatorIO {
         return 0.0;
     }
 
+    // Calculates applied motor voltage
     default double getAppliedVoltage(){
         return 0.0;
     }
