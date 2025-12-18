@@ -16,6 +16,7 @@ public class Dropper extends SubsystemBase {
     this.io = io;
   }
 
+  //every 0.2 secs updates the inputs
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -26,11 +27,12 @@ public class Dropper extends SubsystemBase {
     return new RunCommand (() -> io.setVoltage(voltage), this).withName("Dropper Voltage");
   }
 
-
+//stops the dropper motors
   public Command stop() {
     return runOnce(() -> io.stop().withName("Dropper Stop"));
   }
 
+  // sets the PID
   public void setPIDGains(double kP, double kI, double kD) {
     io.setPIDGains(kP, kI, kD);
   }

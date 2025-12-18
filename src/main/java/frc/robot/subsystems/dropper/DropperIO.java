@@ -24,12 +24,22 @@ public interface DropperIO {
     public default void setVoltage(double voltage) {}
     
     public default void setPosition(int position) {}
+
+    public default void setSetpoint(double setpoint) {}
+
+    public default void goToSetpoint(double setpoint) {}
     
     public default void stop() {}
 
     // PID
-    public default void setPIDGains(double kp, ki, kd) {}
-    public default double getP() {}
-    public default double getI() {}
-    public default double getD() {}
+    public default void setPIDGains(double kp, double ki, double kd) {}
+    public default double getP() {
+        return 0.0;
+    }
+    public default double getI() {
+        return 0.0;
+    }
+    public default double getD() {
+        return 0.0;
+    }
 }
