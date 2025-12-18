@@ -17,10 +17,11 @@ public class Claw extends SubsystemBase {
             //logs the information to AdvantageKit
             Logger.processInputs(“Claw”, inputs);
         }
-        //comand to open the claw, runs with opening voltage until interrupted
+        //command to open the claw, runs with opening voltage until interrupted
         public Command openClaw() {
             return run(
                 () -> io.open(ClawConstants.Claw_Open_Voltage)
+                //logging purposes
                 .withName("Claw/Open");
             )
         }
@@ -28,6 +29,7 @@ public class Claw extends SubsystemBase {
         public Command closeClaw() {
             return run(
                 () -> io.close(ClawConstants.Claw_Close_Voltage)
+                //logging purposes
                 .withName("Claw/Close")
             )
         }
@@ -35,6 +37,7 @@ public class Claw extends SubsystemBase {
         public Command stopCommand() {
             return runOnce(
                 () -> io.stop()
+                //logging purposes
                 .withName("Claw/Stop")
             )
         }

@@ -45,7 +45,9 @@ public class ClawIOSim implements ClawIO{
 
     @Override
     public void open(double volts) {
+        //storing voltage in a variable
         appliedVoltage = volts;
+        //applying voltage to the sim
         sim.setInputVoltage(volts);
     }
     //Set voltage for opening
@@ -60,6 +62,7 @@ public class ClawIOSim implements ClawIO{
     @Override
     public void stop() {
         appliedVoltage = 0.0
-        sim.setInputVolate(0.0);
+        sim.setInputVoltage(0.0);
     }
+    //sets voltage to zero
 }

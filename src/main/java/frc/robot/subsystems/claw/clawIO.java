@@ -13,7 +13,7 @@ public interface ClawIO {
         //monitors temp of motor for overheating, set to zero as a starting value
         public double tempCelsius = 0.0
     }
-    //empty methods that will be overridden in the other IO files
+    //empty methods that will be overriden in the other IO files
     public default void updateInputs(ClawIOInputs inputs) {}
     public default void open(double volts) {}
     public default void close(double volts) {}
