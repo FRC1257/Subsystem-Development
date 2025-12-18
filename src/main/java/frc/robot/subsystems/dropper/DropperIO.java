@@ -4,7 +4,7 @@ public interface DropperIO {
 
     public static class DropperIOInputs {
         public double angle;
-        public double velocity;
+        public static double velocity;
         public double appliedVoltage;
         public double angleRads;
         public double angVelocityRadsPerSec;

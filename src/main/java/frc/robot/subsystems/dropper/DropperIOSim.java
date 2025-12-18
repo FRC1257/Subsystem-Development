@@ -2,16 +2,22 @@ package frc.robot.subsystems.dropper;
 
 import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 public class DropperIOSim implements DropperIO {
     private  SparkMax leftMotor = new SparkMax(DropperConstants.LEFT_DROPPER_MOTOR_ID, MotorType.kBrushless);
+    private RelativeEncoder leftEncoder = leftMotor.getEncoder();
+    private final double pi = DropperConstants.PI;
+    private ProfiledPIDController pidControllerSim = new ProfiledPIDController(0, 0, 0, DropperConstants.kDropperConstraints);
 
     @Override
-    public default void updateInputs(DropperIOInputs inputs) {
+    public void updateInputs(DropperIOInputs inputs) {
         sim.update(0.02); //updates
         inputs.appliedVoltage = leftMotor.getAppliedOutput() * leftMotor.getBusVoltage(); //from spark max
         inputs.angVelocityRadsPerSec = leftEncoder.getVelocity() * 2 * pi / 60;
@@ -21,47 +27,46 @@ public class DropperIOSim implements DropperIO {
       }
 
     @Override
-    public default double getAngle() {
+    public double getAngle() {
         return DropperIOInputs.angle;
     }
 
     @Override
-    public default double getAngVelocity() {
+    public double getAngVelocity() {
         return DropperIOInputs.velocity;
     }
 
     @Override
-    public default void setVoltage(double voltage) {
+    public void setVoltage(double voltage) {
 
     }
     
     @Override
-    public default void setPosition(int position) {
+    public void setPosition(int position) {
 
     }
     
     @Override
-    public default void stop() {}
+    public void stop() {}
 
     // PID
 
     @Override
-    public default void setPIDGains(double kp, ki, kd) {
+    public void setPIDGains(double kp, double ki, double kd) {
         
     }
     
+
     @Override
-    public default double getP() {
-        
+    public double getP(){
+        return pidControllerSim.getP();
     }
-    
     @Override
-    public default double getI() {
-        
+    public double getI(){
+        return pidControllerSim.getI();
     }
-    
     @Override
-    public default double getD() {
-        
+    public double getD(){
+        return pidControllerSim.getD();
     }
 }
