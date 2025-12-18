@@ -1,6 +1,84 @@
+package frc.robot.subsystems.elevator;
+
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
+import org.littletonrobotics.junction.Logger;
+
 public class ElevatorIOSparkMax implements ElevatorIO {
-// Profiled PID
-private ProfiledPIDController controller = new ProfiledPIDController(
-  kP, kI, kD,
-  new TrapezoidProfile.Constraints(MaxVelocity, MaxAcceleration));
+
+     double lastTime = Timer.getFPGATimestamp();
+
+private SparkMax leftMotor;
+  // right follows left
+  private SparkMax rightMotor;
+  private RelativeEncoder leftEncoder;
+
+
+public class ElevatorIOSparkMax {
+     private ProfiledPIDController pidController =
+      new ProfiledPIDController(
+          ElevatorConstants.ELEVATOR_REAL_PID[0],
+          ElevatorConstants.ELEVATOR_REAL_PID[1],
+          ElevatorConstants.ELEVATOR_REAL_PID[2],
+          new TrapezoidProfile.Constraints(
+              ElevatorConstants.MAX_VELOCITY, ElevatorConstants.MAX_ACCELERATION));
+
+              
+  public ElevatorIOSparkMax() {
+    leftMotor = new SparkMax(ElevatorConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
+    rightMotor = new SparkMax(ElevatorConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
+
+    leftEncoder = leftMotor.getEncoder();
+    leftEncoder.setPosition(0);
+
+    SparkMaxConfig leftConfig = new SparkMaxConfig();
+    leftConfig
+        .smartCurrentLimit(Constants.NEO_CURRENT_LIMIT)
+        .idleMode(ElevatorConstants.MOTOR_DEFAULT_IDLE_MODE) //??
+        .voltageCompensation(12.0)
+        .inverted(false);
+    leftConfig
+        .encoder
+        .positionConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR) 
+        .velocityConversionFactor(ElevatorConstants.POSITION_CONVERSION_FACTOR / 60.0);
+
+    SparkMaxConfig rightConfig = new SparkMaxConfig();
+    rightConfig.apply(leftConfig);
+    rightConfig.follow(leftMotor, true);
+
+    // reset safe kResetSafeParameters switches the motor to default paramaters, then adds the
+    // changes from the config object
+    // persist paramaters saves these changes to the motor memory so it doesn't get cooked during
+    // brownouts
+    // only use persist in the BEGINNING, not later
+    leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    rightMotor.configure(
+        rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+    pidController.setTolerance(ElevatorConstants.SETPOINT_TOLERANCE_METERS);
+
+    limitSwitch = new DigitalInput(ElevatorConstants.LIMIT_SWITCH_CHANNEL);
+
+  }
+
+  private void updateMotorConfig(SparkMaxConfig config) {
+    // DO NOT RESET paramaters becasue we only want to change some paramaters, not all
+    // DO NOT PERSIST because this is a temporary change that we don't want to save to memory
+    leftMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    rightMotor.configure(
+        config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+  }
+}
 }
