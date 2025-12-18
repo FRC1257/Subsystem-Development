@@ -44,8 +44,6 @@ public interface ElevatorIO {
     default double getAppliedVoltage(){
         return 0.0;
     }
-
-    default void setRPM(double rpm){}
    
     // Checking if elevator goes above limit height
     default boolean isLimitSwitchPressed() {
