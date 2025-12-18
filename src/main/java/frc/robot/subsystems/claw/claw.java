@@ -16,6 +16,10 @@ public class Claw extends SubsystemBase {
             io.updateInputs(inputs);
             //logs the information to AdvantageKit
             Logger.processInputs(“Claw”, inputs);
+            //stops claw if current amps is too high to ensure the claw doesn't open too much
+            if (inputs.currentAmps > ClawConstants.MAX_SAFE_CURRENT_AMPS) {
+                io.stop();
+            }
         }
         //command to open the claw, runs with opening voltage until interrupted
         public Command openClaw() {
