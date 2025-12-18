@@ -1,13 +1,20 @@
 package frc.robot.subsystems.claw;
+//Idk how to do the auto importation and idk what to import
+
 
 public class ClawConstants{
-    public static final int Claw_Motor_ID = 0
+    //abitrary number
+    public static final int Claw_Motor_ID = 1;
 
-    public static final double kClawGearing = 0
+    //arbitrary number
+    public static final double ClawGearing = 4;
 
-    public static final double kMomentofInertia = 1.2 
+    //arbitrary number
+    public static final double MomentofInertia = 6;
 
-    public static final double Claw_Open_Speed = -1.2
+    //voltage to open the claw, negative to run the motor in reverse
+    public static final double Claw_Open_Voltage = -6;
     
-    public static final double Claw_Close_Speed = 1.2
+    //voltage to close claw
+    public static final double Claw_Close_Voltage = 6;
 }
