@@ -26,30 +26,29 @@ public interface ElevatorIO {
     
     default void updateInputs(ElevatorIOInputs inputs) {}
 
-    default void setVoltage(double voltage) {}
     // Getter method for target height
-    default void getSetpoint() {
+    default double getSetpoint() {
         return 0.0;
     }
    
     // Getter method for current position
-    default void getPosition() {
+    default double getPosition() {
         return 0.0;
     }
 
-    default void updateInputs(ElevatorIOInputs inputs) {}
     // Getter method for velocity
-    default void getVelocity(){
+    default double getVelocity(){
         return 0.0;
     }
 
     default void setRPM(double rpm){}
+   
     // Checking if elevator goes above limit height
     default boolean isLimitSwitchPressed() {
         return false;
     }
 
-    default void setFeedForwardGains(double kS, double kV, double kA) {}
+   
 
     // Subsystem API (Used by commands)
    

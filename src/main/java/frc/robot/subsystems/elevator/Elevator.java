@@ -10,23 +10,29 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 
 public class Elevator extends SubsystemBase{
-    private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
+  
+  
+  private final ElevatorIO io;
+  private final ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
 
 
 
-private final ElevatorIO io;
+  public Elevator(ElevatorIO io) {
+    this.io = io;
+  }
+
 
 @Override
 public void periodic() {
-  ElevatorIO.updateInputs(ElevatorInputs);
+  io.updateInputs(ElevatorInputs);
 }
 
 public Command runVoltageCommand(Supplier<Voltage> voltage) {
-    return run(() -> ElevatorIO.setVoltage(voltage.get())).withName("Voltage");
+    return run(() -> io.setVoltage(voltage.get())).withName("Voltage");
   }
 
  public Command runRPMCommand(Supplier<AngularVelocity> rpm) {
-    return run(() -> ElevatorIO.setRPM(rpm.get())).withName("RPM");
+    return run(() -> io.setRPM(rpm.get())).withName("RPM");
   }   
 
 
