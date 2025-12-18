@@ -23,7 +23,7 @@ public class ElevatorIOSparkMax implements ElevatorIO {
 private SparkMax leftMotor;
   // right follows left
   private SparkMax rightMotor;
-  private RelativeEncoder leftEncoder;
+  private RelativeEncoder leftEncoder; 
 
 
 public class ElevatorIOSparkMax {
@@ -127,7 +127,10 @@ public class ElevatorIOSparkMax {
     setVoltage(math.util.clamp(pidOutput, -ElevatorConstants.MAX_VOLTAGE, ElevatorConstants.MAX_VOLTAGE));
   }
 
-  
+  @Override
+  public boolean atSetpoint() {
+    return pidController.atSetpoint();
+  }
   
 }
 }
