@@ -39,10 +39,12 @@ public class ElevatorIOSparkMax {
   public ElevatorIOSparkMax() {
     leftMotor = new SparkMax(ElevatorConstants.LEFT_MOTOR_ID, MotorType.kBrushless);
     rightMotor = new SparkMax(ElevatorConstants.RIGHT_MOTOR_ID, MotorType.kBrushless);
-
+    // encoders have the same height, since elevator moves up and down
     leftEncoder = leftMotor.getEncoder();
     leftEncoder.setPosition(0);
 
+
+    // Configs were borrowed from previous code :)
     SparkMaxConfig leftConfig = new SparkMaxConfig();
     leftConfig
         .smartCurrentLimit(Constants.NEO_CURRENT_LIMIT)
@@ -57,12 +59,6 @@ public class ElevatorIOSparkMax {
     SparkMaxConfig rightConfig = new SparkMaxConfig();
     rightConfig.apply(leftConfig);
     rightConfig.follow(leftMotor, true);
-
-    // reset safe kResetSafeParameters switches the motor to default paramaters, then adds the
-    // changes from the config object
-    // persist paramaters saves these changes to the motor memory so it doesn't get cooked during
-    // brownouts
-    // only use persist in the BEGINNING, not later
     leftMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     rightMotor.configure(
         rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -74,11 +70,64 @@ public class ElevatorIOSparkMax {
   }
 
   private void updateMotorConfig(SparkMaxConfig config) {
-    // DO NOT RESET paramaters becasue we only want to change some paramaters, not all
-    // DO NOT PERSIST because this is a temporary change that we don't want to save to memory
     leftMotor.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
     rightMotor.configure(
         config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
+
+  @Override
+  public void updateInputs(ElevatorIOInputs inputs) {
+    inputs.setpointMeters = getSetpoint();
+    inputs.positionMeters = getPosition();
+    inputs.velocityMetersPerSec = getVelocity();
+    inputs.appliedVoltage = getAppliedVoltage();
+    inputs.isLimitSwitchPressed = isLimitSwitchPressed();
+    
+  }
+
+  @Override 
+  public double getSetpoint() {
+    return pidController.getSetpoint().position;
+}
+
+  @Override 
+  public double getPosition {
+    return leftEncoder.getPosition();
+  }
+
+  @Override 
+  public double getVelocity {
+    return leftEncoder.getVelocity();
+  }
+
+  @Override 
+  public double getAppliedVoltage {
+    return leftMotor.getAppliedOutput() * leftMotor.getBusVoltage();
+  }
+
+  @Override
+  public boolean isLimitSwitchPressed() {
+    return !limitSwitch.get();
+  }
+
+
+  @Override 
+  public void setSetpoint(double setpoint) {
+    pidController.setGoal(MathUtil.clamp(setpoint, ElevatorConstants.MIN_HEIGHT, ElevatorConstants.MAX_HEIGHT));
+  }
+
+  @Override 
+  public void goToSetpoint() { 
+    double pidOutput = pid.Controller.calculate(getPosition());
+   
+    double ffOutput = feedforward.calculate(pidController.getSetpoint().velocity, pidController.getSetpoint().acceleration);
+
+    double acceleration = pidController.getSetpoint().acceleration;
+
+    setVoltage(math.util.clamp(pidOutput, -ElevatorConstants.MAX_VOLTAGE, ElevatorConstants.MAX_VOLTAGE));
+  }
+
+  
+  
 }
 }
