@@ -4,7 +4,7 @@ import static frc.robot.Constants.NEO_CURRENT_LIMIT;
 
 import com.fasterxml.jackson.databind.ser.std.StdKeySerializers.Default;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -21,12 +21,12 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class DropperIOSparkMax implements DropperIO {
     
-    private ProfiledPIDController controller = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile(-12, 12));
+    private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(-12, 12);
+    private ProfiledPIDController pidController = new ProfiledPIDController(0, 0, 0, constraints);
     private SparkMax rightMotor; 
     private RelativeEncoder rightEncoder;    
     private SparkMax leftMotor;
     private RelativeEncoder leftEncoder;
-    private final ProfiledPIDController pidController;
     private double pi = DropperConstants.PI;
 
     //some variables for the methods like go to setpoint
@@ -39,11 +39,12 @@ public class DropperIOSparkMax implements DropperIO {
         leftMotor = new SparkMax(DropperConstants.LEFT_DROPPER_MOTOR_ID, MotorType.kBrushless);//ask the type of motor
         rightMotor = new SparkMax(DropperConstants.RIGHT_DROPPER_MOTOR_ID, MotorType.kBrushless);
         
-        rightMotor.follow(leftMotor, false);
+        rightMotor.follow(leftMotor);
+        //The right motor should follow the left motor
 
         leftEncoder = leftMotor.getEncoder();
-        rightEncoder = rightMotor.getEncoder();
-
+        rightEncoder = leftEncoder;
+        
         SparkMaxConfig configLeft = new SparkMaxConfig();
         configLeft
             .idleMode(IdleMode.kBrake)
@@ -98,8 +99,8 @@ public class DropperIOSparkMax implements DropperIO {
 
     }
     @Override
-    public void goToSetpoint(){
-        double pidOutput = pidController.calculate(getAngle()); //feyrgfasrrkguilsrhfdljf;ksdjfakfjieowj;owedsjkllfjweo;ifjoasi;djlkjfwoiej;dksjf;sldjfoaejriofj;orjlkdjsoiifejrkldjsiojrkfjslkfjo;ei;rjdjkljfois;irrje;lsjkajfsoijrofajas
+    public void goToSetpoint(double setpoint){
+        double pidOutput = pidController.calculate(getAngle()); 
         double acceleration = (pidController.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime); //change in velocity over change in time... physics..
     //acceleration of the PID setpoint
 
@@ -119,38 +120,22 @@ public class DropperIOSparkMax implements DropperIO {
     //PID
     
     @Override
-    public default void setPIDGains(double kp, ki, kd){
-        velocityPID.setP(kp);//idek
-        velocityPID.setI(ki);
-        velocityPID.setD(kd); 
+    public void setPIDGains(double kp, double ki, double kd){
+        pidController.setP(kp);
+        pidController.setI(ki);
+        pidController.setD(kd); 
     }
 
     @Override
-    public default double getP(){
+    public double getP(){
         return pidController.getP();
     }
     @Override
-    public default double getI(){
+    public double getI(){
         return pidController.getI();
     }
     @Override
-    public default double getD(){
+    public double getD(){
         return pidController.getD();
     }
 }
-
-/*
-    public default void setVoltage(double voltage) {}
-    
-    public default void setPosition(int position) {}
-    
-    public default void stop() {}
-
-    // PID
-    public default void setPIDGains(double kp, ki, kd) {}
-    public default double getP() {}
-    public default double getI() {}
-    public default double getD() {}
-
-
- */
