@@ -1,5 +1,5 @@
 package frc.robot.subsystems.elevator;
-
+//explain why used ppid, because elevators cant handle jerky movements and instread need smooth transitions.
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -92,6 +92,11 @@ private SparkMax leftMotor;
     // get the absolute position in radians, then convert to meters
     return leftEncoder.getPosition();
   }
+  
+  @Override
+  public double getVelocity() {
+    return leftEncoder.getVelocity();
+  }
 
   @Override
   public void setSetpoint(double setpoint) {
@@ -106,10 +111,6 @@ private SparkMax leftMotor;
     return pidController.atGoal();
   }
 
-  @Override
-  public double getVelocity() {
-    return leftEncoder.getVelocity();
-  }
 
   @Override
   public void setVoltage(double voltage) {

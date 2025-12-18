@@ -3,8 +3,6 @@ package frc.robot.subsystems.elevator;
 public class ElevatorConstants {
     public static final double[] ELEVATOR_REAL_PID = {0,0,0,0};
     public static final double[] ELEVATOR_REAL_FF = {0,0,0,0};
-    public static final double MAX_VELOCITY = 0.0;
-    public static final double MAX_ACCELERATION = 0.0;
     public static int LEFT_MOTOR_ID = 1;
     public static int RIGHT_MOTOR_ID = 2;
     public static final double SETPOINT_TOLERANCE_METERS = 0.0;
