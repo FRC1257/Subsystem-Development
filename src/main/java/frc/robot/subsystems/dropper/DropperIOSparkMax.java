@@ -91,9 +91,9 @@ public class DropperIOSparkMax implements DropperIO {
     //PID
 
     public void setPIDGains(double kp, ki, kd){
-        velocityPID.setP(p);//idek
-        velocityPID.setI(i);
-        velocityPID.setD(d);
+        velocityPID.setP(kp);//idek
+        velocityPID.setI(ki);
+        velocityPID.setD(kd);
     }
 
 
