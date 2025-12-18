@@ -2,7 +2,7 @@ package frc.robot.subsystems.dropper;
 
 public interface DropperIO {
 
-    public class DropperIOInputs {
+    public static class DropperIOInputs {
         public double angle;
         public double velocity;
         public double appliedVoltage;
@@ -14,11 +14,11 @@ public interface DropperIO {
     public default void updateInputs(DropperIOInputs inputs) {}
 
     public default double getAngle() {
-        return DropperIOInputs.angle;
+        return 0.0;
     }
 
     public default double getAngVelocity() {
-        return DropperIOInputs.velocity;
+        return 0.0;
     }
 
     public default void setVoltage(double voltage) {}

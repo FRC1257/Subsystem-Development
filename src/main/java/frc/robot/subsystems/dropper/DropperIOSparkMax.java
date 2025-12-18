@@ -10,21 +10,29 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.Timer;
 
 public class DropperIOSparkMax implements DropperIO {
     
     private ProfiledPIDController controller = new ProfiledPIDController(0, 0, 0, new TrapezoidProfile(-12, 12));
-    private SparkMax rightMotor; //changed from spark flex to can spark max cuz 
+    private SparkMax rightMotor; 
     private RelativeEncoder rightEncoder;    
     private SparkMax leftMotor;
     private RelativeEncoder leftEncoder;
     private final ProfiledPIDController pidController;
     private double pi = DropperConstants.PI;
+
+    //some variables for the methods like go to setpoint
+    
+    double lastSpeed = 0; //just blanl
+    double lastTime = Timer.getFPGATimestamp();
 
     public DropperIOSparkMax() {
         //motors
@@ -89,10 +97,16 @@ public class DropperIOSparkMax implements DropperIO {
         pidController.reset(getAngle(), getAngVelocity());
 
     }
-
     @Override
     public void goToSetpoint(){
+        double pidOutput = pidController.calculate(getAngle()); //feyrgfasrrkguilsrhfdljf;ksdjfakfjieowj;owedsjkllfjweo;ifjoasi;djlkjfwoiej;dksjf;sldjfoaejriofj;orjlkdjsoiifejrkldjsiojrkfjslkfjo;ei;rjdjkljfois;irrje;lsjkajfsoijrofajas
+        double acceleration = (pidController.getSetpoint().velocity - lastSpeed) / (Timer.getFPGATimestamp() - lastTime); //change in velocity over change in time... physics..
+    //acceleration of the PID setpoint
 
+        setVoltage(MathUtil.clamp(pidOutput, -12, 12));
+
+        lastSpeed = pidController.getSetpoint().velocity;
+        lastTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -105,7 +119,7 @@ public class DropperIOSparkMax implements DropperIO {
     //PID
     
     @Override
-    public void setPIDGains(double kp, ki, kd){
+    public default void setPIDGains(double kp, ki, kd){
         velocityPID.setP(kp);//idek
         velocityPID.setI(ki);
         velocityPID.setD(kd); 
